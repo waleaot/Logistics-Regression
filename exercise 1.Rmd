@@ -1,0 +1,53 @@
+---
+title: "R Notebook for Up2036710 .DEP. DIGITAL BUSINESS Course M31222"
+Date: May 2021
+assignment: Number 1
+output: html_notebook
+---
+```{r}
+# loading important libraries
+library(dplyr)
+library(readr)
+library(ISLR)
+```
+
+```{r}
+#bringing the data into r
+the_data <- read.csv("SME Exercise1.csv" ,header= T)
+```
+
+```{r}
+# producing charts...
+# to examine the the distribution of ROA variable, we do histogram plot
+hist(the_data$ROA, main= "histogram of ROA",prob= T, ylim=c(0,6),col="orange", xlab = "ROA")
+lines(density(the_data$ROA), col="black")
+```
+
+```{r}
+# to examine ROA relationship with other variable, we would do some pair()...codes
+pairs(~ROA + CurrentRatio+ OperatingMargin+Leverage
+, main= "scatter plot for the variables",  col= c('red','green'))
+```
+
+```{r}
+#get correlation
+cor_val <- round(cor(cbind(ROA,CurrentRatio,OperatingMargin,Leverage)),2)
+cor_val
+```
+
+
+```{r}
+# next will be to generate a descriptive stats for our variables
+the_stats <- summary(the_data)
+View(the_stats)
+```
+
+```{r}
+# next will be analysis proper
+# Fit the following log-log model: log(ROAi) = a + b1log(CurrentRatio)+ b2log(OperatingMargin) + b3log(leverage)
+
+lm_log.model = lm(log1p(ROA) ~ log1p(CurrentRatio) + log1p(OperatingMargin) + log1p(Leverage), data = the_data)
+
+summary(lm_log.model)
+```
+
